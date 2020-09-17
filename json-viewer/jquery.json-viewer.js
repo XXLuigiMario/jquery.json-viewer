@@ -71,27 +71,26 @@
         html += '[]';
       }
     } else if (typeof json === 'object') {
-      var keyCount = Object.keys(json).length;
-      if (keyCount > 0) {
+      var keys = Object.keys(json);
+      if (keys.length) {
         html += '{<ul class="json-dict">';
-        for (var key in json) {
-          if (Object.prototype.hasOwnProperty.call(json, key)) {
-            html += '<li>';
-            var keyRepr = options.withQuotes ?
-              '<span class="json-string">"' + key + '"</span>' : key;
-            // Add toggle button if item is collapsable
-            if (isCollapsable(json[key])) {
-              html += '<a href class="json-toggle">' + keyRepr + '</a>';
-            } else {
-              html += keyRepr;
-            }
-            html += ': ' + json2html(json[key], options);
-            // Add comma if item is not last
-            if (--keyCount > 0) {
-              html += ',';
-            }
-            html += '</li>';
+        for (var i = 0; i < keys.length; ++i) {
+          html += '<li>';
+          var key = keys[i];
+          var keyRepr = options.withQuotes ?
+            '<span class="json-string">"' + key + '"</span>' : key;
+          // Add toggle button if item is collapsable
+          if (isCollapsable(json[key])) {
+            html += '<a href class="json-toggle">' + keyRepr + '</a>';
+          } else {
+            html += keyRepr;
           }
+          html += ': ' + json2html(json[key], options);
+          // Add comma if item is not last
+          if (i < keys.length - 1) {
+            html += ',';
+          }
+          html += '</li>';
         }
         html += '</ul>}';
       } else {
